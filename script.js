@@ -7,7 +7,18 @@ const formRead = document.getElementById("read")
 const lib = document.getElementById("books")
 const submit = document.getElementById("submit")
 
+const localStorageAvaialble = storageAvailable("localStorage")
+
 let library = [];
+
+if(localStorageAvaialble) {
+    if(localStorage.getItem("library")) {
+        let tempLib = JSON.parse(localStorage.getItem("library"))
+        tempLib.forEach(element => {
+            addToLibrary(element.title, element.author, element.pages, element.read)
+        })
+    }
+}
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -75,12 +86,43 @@ function addToLibrary(title, author, pages, read) {
     
     removeElem.appendChild(removeButton)
     lib.appendChild(row)
+
+    populateStorage()
 }
 
 function createRowElem(text) {
     let toRet = document.createElement("td")
     toRet.textContent = text
     return toRet
+}
+
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
+function populateStorage() {
+    localStorage.setItem("library", JSON.stringify(library))
 }
 
 document.getElementById("newbook").addEventListener("click", function() {
@@ -101,7 +143,3 @@ submit.addEventListener("click", function() {
     addToLibrary(formTitle.value, formAuth.value, formPages.value, hasRead)
     form.style.display = "none"
 })
-
-addToLibrary('It', 'person', 123, false)
-addToLibrary('Is', 'dude', 234, true)
-addToLibrary('Not', 'friend', 345, false)
