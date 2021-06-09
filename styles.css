@@ -1,0 +1,46 @@
+body {
+  font-family: monospace;
+  font-size: 20px;
+}
+
+#form {
+  display: none;
+}
+
+button, input {
+  font-family: monospace;
+  font-size: 20px;
+  padding:5px 10px;
+}
+
+[value="Read"], [value="Yes!"] {
+  background-color:rgb(172, 255, 172)
+}
+
+[value="Not read"], [value="Not Yet!"] {
+  background-color: rgb(255, 172, 172);
+}
+
+input {
+  padding: 5px 10px;
+  background-color: white;
+}
+
+table, th, td {
+  font-family: monospace;
+  font-size: 20px;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff;
+}
